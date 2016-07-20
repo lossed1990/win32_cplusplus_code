@@ -11,7 +11,7 @@
 using namespace std;
 
 /**
- * @breif 字符处理常用函数帮助类
+ * @brief 字符处理常用函数帮助类
  */
 class CStringHelper
 {
@@ -21,7 +21,7 @@ public:
 
 public:
 	/**
-	 * @breif 根据单个分隔符，分离字符串
+	 * @brief 根据单个分隔符，分离字符串
      * 
      * @param chStr[in]      待分割的字符串
      * @param cSeparator[in] 分割符

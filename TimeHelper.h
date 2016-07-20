@@ -8,7 +8,7 @@
 
 
 /**
- * @breif 时间处理常用函数帮助类
+ * @brief 时间处理常用函数帮助类
  */
 class CTimeHelper
 {

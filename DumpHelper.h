@@ -6,7 +6,7 @@
  */
 
 /**
- * @breif dump文件创建帮助类
+ * @brief dump文件创建帮助类
  */
 class CDumpHelper
 {

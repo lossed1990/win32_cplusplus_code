@@ -8,7 +8,7 @@
 
 
 /**
- * @breif 日志记录帮助类
+ * @brief 日志记录帮助类
  */
 class CLogHelper
 {
