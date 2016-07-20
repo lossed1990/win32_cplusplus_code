@@ -16,9 +16,44 @@ public:
 
 public:
 	/**
+	 * @breif 判断当前程序是否已运行
+	 *
+	 * @param cMutexName[in]  互斥量名称
+	 *
+	 * @return true-已运行 false-未运行
+	 *
+	 * @code
+	 int main(int argc, char* argv[])
+	 {
+	     bool bRunning = CSystemHelper::IsRunning("Single.test");
+	     if (bRunning){
+	         cout << "yes" << endl;
+	     } else {
+	         cout << "no" << endl;
+	     }
+
+	     ::system("pause");
+	     return 0;
+	 }
+	 * @endcode
+	 */
+	static bool IsRunning(const char* cMutexName)
+	{
+		HANDLE hSingleton = CreateMutexA(NULL, FALSE, cMutexName);
+		if ((hSingleton != NULL) && (GetLastError() == ERROR_ALREADY_EXISTS))
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * @breif 获取文件版本描述，输出示例：v1.0.0.1
      * 
      * @param cFileName[in]  文件路径
+	 *
+	 * @return 版本描述字符
      *
      * @code
        int main(int argc, char* argv[])
@@ -59,6 +94,8 @@ public:
 
 	/**
 	 * @breif 获取当前应用程序版本描述，输出示例：v1.0.0.1
+	 *
+	 * @return 版本描述字符
 	 *
 	 * @code
 	 int main(int argc, char* argv[])
