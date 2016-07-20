@@ -1,3 +1,9 @@
+/**
+ * @file SystemHelper.h windows系统常用函数整理
+ *
+ * 日期        作者        描述
+ * 2016/07/20  gxl		   create
+ */
 #pragma once
 
 #include <string>
@@ -8,6 +14,9 @@ using namespace std;
 
 #pragma comment(lib, "version.lib")
 
+/**
+ * @breif windows系统常用函数帮助类
+ */
 class CSystemHelper
 {
 public:

@@ -1,9 +1,18 @@
+/**
+ * @file StringHelper.h 字符处理常用函数整理
+ *
+ * 日期        作者        描述
+ * 2016/07/20  gxl		   create 
+ */
 #pragma once
 
 #include <string>
 #include <vector>
 using namespace std;
 
+/**
+ * @breif 字符处理常用函数帮助类
+ */
 class CStringHelper
 {
 public:
