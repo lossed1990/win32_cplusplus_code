@@ -58,6 +58,10 @@ void testSystemHelper()
 	TEST_FUNC("CheckProcessExist(\"firefox.exe\")");
 	str = CSystemHelper::CheckProcessExist("firefox.exe") ? "firefox.exe进程存在" : "firefox.exe进程不存在";
 	TEST_RES(str);
+
+	TEST_FUNC("DestoryProcess(\"hh.exe\")");
+	CSystemHelper::DestoryProcess("hh.exe");
+	TEST_RES("void");
 	
 }
 
