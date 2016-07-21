@@ -4,7 +4,8 @@
  * 日期        作者        描述
  * 2016/07/20  gxl		   create
  */
-#pragma once
+#ifndef G_SYSTEMHELPER_H_
+#define G_SYSTEMHELPER_H_
 
 #include <string>
 #include <windows.h>
@@ -148,3 +149,5 @@ public:
 		CloseHandle(hProcessSnap);
 	}
 };
+
+#endif // G_SYSTEMHELPER_H_

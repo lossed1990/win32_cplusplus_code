@@ -115,6 +115,14 @@ void testLogHelper()
 
 void testDumpHelper()
 {
+	TEST_BEGIN("testDumpHelper");
 
+	CDumpHelper dumper;
+	dumper.SetHandler();
+
+	TEST_RES("请修改demo代码，测试dump的生成");
+	//添加以下内容，运行demo时将生成一个dump文件
+	//int* i = NULL;
+	//*i = 0;
 }
 

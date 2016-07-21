@@ -4,7 +4,8 @@
  * 日期        作者        描述
  * 2016/07/20  gxl         create
  */
-#pragma once
+#ifndef G_LOGHELPER_H_
+#define G_LOGHELPER_H_
 
 
 /**
@@ -18,3 +19,5 @@ public:
 
 
 };
+
+#endif // G_LOGHELPER_H_

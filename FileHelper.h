@@ -4,7 +4,8 @@
  * 日期        作者        描述
  * 2016/07/20  gxl         create
  */
-#pragma once
+#ifndef G_FILEHELPER_H_
+#define G_FILEHELPER_H_
 
 #include <string>
 
@@ -157,3 +158,5 @@ public:
 		return strPath;
 	}
 };
+
+#endif // G_FILEHELPER_H_

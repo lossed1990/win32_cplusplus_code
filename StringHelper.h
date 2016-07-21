@@ -4,7 +4,8 @@
  * 日期        作者        描述
  * 2016/07/20  gxl		   create 
  */
-#pragma once
+#ifndef G_STRINGHELPER_H_
+#define G_STRINGHELPER_H_
 
 #include <string>
 #include <vector>
@@ -64,3 +65,5 @@ public:
 		}
 	}      
 };
+
+#endif // G_STRINGHELPER_H_
