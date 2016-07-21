@@ -51,9 +51,14 @@ void testSystemHelper()
 {
 	TEST_BEGIN("testSystemHelper");
 
-	TEST_FUNC("IsRunning()");
-	string str = CSystemHelper::IsRunning("Single.test") ? "程序已运行" : "程序未运行";
+	TEST_FUNC("CheckProcessMutex(\"Single.test\")");
+	string str = CSystemHelper::CheckProcessMutex("Single.test") ? "本程序已运行" : "本程序未运行";
 	TEST_RES(str);
+
+	TEST_FUNC("CheckProcessExist(\"firefox.exe\")");
+	str = CSystemHelper::CheckProcessExist("firefox.exe") ? "firefox.exe进程存在" : "firefox.exe进程不存在";
+	TEST_RES(str);
+	
 }
 
 void testFileHelper()
@@ -61,12 +66,21 @@ void testFileHelper()
 	TEST_BEGIN("testFileHelper");
 
 	TEST_FUNC("GetFileVersionString(\"demo.exe\")");
-	string cVersion = CFileHelper::GetFileVersionString("demo.exe");
-	TEST_RES(cVersion);
+	string cResult = CFileHelper::GetFileVersionString("demo.exe");
+	TEST_RES(cResult);
 
 	TEST_FUNC("GetCurrentFileVersionString()");
-	cVersion = CFileHelper::GetCurrentFileVersionString();
-	TEST_RES(cVersion);
+	cResult = CFileHelper::GetCurrentFileVersionString();
+	TEST_RES(cResult);
+
+	TEST_FUNC("GetCurrentFilePath()");
+	cResult = CFileHelper::GetCurrentFilePath();
+	TEST_RES(cResult);
+
+	TEST_FUNC("GetCurrentFileParentPath()");
+	cResult = CFileHelper::GetCurrentFileParentPath(5);
+	TEST_RES(cResult);
+	
 }
 
 void testStringHelper()

@@ -46,14 +46,14 @@ public:
 		string verString("unknown");
 
 		DWORD dwHandle;
-		int size = GetFileVersionInfoSizeA(cFileName, &dwHandle);
+		int size = GetFileVersionInfoSize(cFileName, &dwHandle);
 		if (size > 0)
 		{
 			byte *pBuffer = new byte[size];
-			if (GetFileVersionInfoA(cFileName, dwHandle, size, pBuffer))
+			if (GetFileVersionInfo(cFileName, dwHandle, size, pBuffer))
 			{
 				VS_FIXEDFILEINFO *pVI = NULL;
-				if (VerQueryValue(pBuffer, (LPCWSTR)"\\", (LPVOID*)&pVI, (PUINT)&size))
+				if (VerQueryValue(pBuffer, "\\", (LPVOID*)&pVI, (PUINT)&size))
 				{
 					char szVer[64] = { 0 };
 					sprintf_s(szVer, 64, "v%d.%d.%d.%d", HIWORD(pVI->dwFileVersionMS), LOWORD(pVI->dwFileVersionMS),
@@ -86,8 +86,74 @@ public:
 	static string GetCurrentFileVersionString()
 	{
 		char fileName[MAX_PATH] = { 0 };
-		GetModuleFileNameA(NULL, fileName, sizeof(fileName));
+		GetModuleFileName(NULL, fileName, sizeof(fileName));
 
 		return GetFileVersionString(fileName);
+	}
+
+	/**
+	 * @brief 获取当前应用程序路径
+	 *
+	 * @return 路径字符串
+	 *
+	 * @code
+	 int main(int argc, char* argv[])
+	 {
+	     string cPath = CFileHelper::GetCurrentFilePath();
+	     cout << cPath << endl;
+
+	     ::system("pause");
+	     return 0;
+	 }
+	 * @endcode
+	 */
+	static string GetCurrentFilePath()
+	{
+		char exeFullPath[MAX_PATH] = {0};
+		GetModuleFileName(NULL, exeFullPath, MAX_PATH);
+
+		char *p = strrchr(exeFullPath, '\\');
+		if (p)
+		{
+			*p = '\0';
+		}
+		string strPath = exeFullPath;
+		return strPath;
+	}	
+
+	/**
+	 * @brief 获取当前应用程序上层目录
+	 *
+	 * @param nDeep[in] 上级层数 0-文件路径（包含文件名称） 1-当前目录 2-上层目录 3-上层目录的上层目录 超范围时返回磁盘根目录
+	 *
+	 * @return 路径字符串
+	 *
+	 * @code
+	 int main(int argc, char* argv[])
+	 {
+	     string cPath = CFileHelper::GetCurrentFileParentPath(1);
+	     cout << cPath << endl;
+
+	     ::system("pause");
+	     return 0;
+	 }
+	 * @endcode
+	 */
+	static string GetCurrentFileParentPath(int nDeep)
+	{
+		char exeFullPath[MAX_PATH] = { 0 };
+		GetModuleFileName(NULL, exeFullPath, MAX_PATH);
+
+		for (int deep = 0; deep < nDeep; ++deep)
+		{
+			char *p = strrchr(exeFullPath, '\\');
+			if (p)
+			{
+				*p = '\0';
+			}
+		}
+
+		string strPath = exeFullPath;
+		return strPath;
 	}
 };
