@@ -110,7 +110,21 @@ void testTimeHelper()
 
 void testLogHelper()
 {
+	TEST_BEGIN("testLogHelper");
+	SetColor(15, 0);
 
+	CLogHelper g_LogHelper("");
+	g_LogHelper.SetLogToStderr(true);
+
+	//此处列举常用的三种日志记录方式，更多使用方法，请查阅相关资料
+	//①跟踪日志
+	LOG(INFO) << "这是跟踪日志";
+	//②警告日志
+	LOG(WARNING) << "这是警告日志";
+	//③警告日志
+	LOG(ERROR) << "这是错误日志";
+
+	TEST_RES("更多使用方法，请参考网上资料");
 }
 
 void testDumpHelper()
