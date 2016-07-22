@@ -24,7 +24,7 @@ class CLogHelper
 {
 public:
 	/**
-	 * @breif 日志帮助类构造函数
+	 * @brief 日志帮助类构造函数
 	 *
 	 * @param program[in] 程序名称，可以不填
 	 *
@@ -63,7 +63,7 @@ public:
 	~CLogHelper(){ google::ShutdownGoogleLogging(); }
 
 	/**
-	 * @breif 设置是否将日志输出到控制台
+	 * @brief 设置是否将日志输出到控制台
 	 *
 	 * 对于普通的应用程序，开启该选项可以在vs的输出中看到日志，或者使用windbg调试时，看到日志；
 	 *
@@ -83,7 +83,7 @@ public:
 	void SetLogToStderr(bool bOutput) { FLAGS_alsologtostderr = bOutput; }
 
 	/**
-	 * @breif 设置Info级别的日志输出路径，不设置则不会有文本文件记录
+	 * @brief 设置Info级别的日志输出路径，不设置则不会有文本文件记录
 	 *
 	 * glog源码如果文件夹不存在，将会把日志记录在系统temp文件夹中；demo中libglog.dll本人修改过，文件夹不存在时，不记录
 	 *
@@ -103,7 +103,7 @@ public:
 	void SetInfoLogDestination(const char* filepath) { google::SetLogDestination(google::GLOG_INFO, filepath); }
 
 	/**
-	 * @breif 设置warning级别的日志输出路径，不设置则不会有文本文件记录
+	 * @brief 设置warning级别的日志输出路径，不设置则不会有文本文件记录
 	 *
 	 * glog源码如果文件夹不存在，将会把日志记录在系统temp文件夹中；demo中libglog.dll本人修改过，文件夹不存在时，不记录
 	 *
@@ -123,7 +123,7 @@ public:
 	void SetWarnLogDestination(const char* filepath) { google::SetLogDestination(google::GLOG_WARNING, filepath); }
 
 	/**
-	 * @breif 设置error级别的日志输出路径，不设置则不会有文本文件记录
+	 * @brief 设置error级别的日志输出路径，不设置则不会有文本文件记录
 	 *
 	 * glog源码如果文件夹不存在，将会把日志记录在系统temp文件夹中；demo中libglog.dll本人修改过，文件夹不存在时，不记录
 	 *

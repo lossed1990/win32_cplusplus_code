@@ -45,7 +45,7 @@ class CDumpHelper
 {
 public:
 	CDumpHelper() { m_pDump = this; }
-	~CDumpHelper() {};
+	~CDumpHelper() {}
 
 	void SetHandler() { ::SetUnhandledExceptionFilter(&CDumpHelper::TopLevelExceptionFilter); }
 
