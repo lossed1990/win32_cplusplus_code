@@ -148,6 +148,111 @@ public:
 		}
 		CloseHandle(hProcessSnap);
 	}
+
+	/**
+	 * @brief 开机自运行本程序
+	 *
+	 * @param cProcessName[in] 程序名称
+	 *
+	 * @code
+	 int main(int argc, char* argv[])
+	 {
+	     CSystemHelper::SetAutoStartup("demo");
+
+	     ::system("pause");
+	     return 0;
+	 }
+	 * @endcode
+	 */
+	static bool SetAutoStartup(const char* cProcessName)
+	{
+		char filename[MAX_PATH];
+		GetModuleFileName(NULL, filename, MAX_PATH);
+
+		//判断环境是否为WOW64  
+		BOOL isWOW64;
+		REGSAM samDesired;
+		IsWow64Process(GetCurrentProcess(), &isWOW64);
+		samDesired = isWOW64 ? KEY_WRITE | KEY_WOW64_64KEY : KEY_WRITE;
+		
+		HKEY hKey;
+		LONG lRet = RegCreateKeyEx(HKEY_LOCAL_MACHINE, TEXT("Software\\Microsoft\\Windows\\CurrentVersion\\Run"), 0, NULL, 0, samDesired, NULL, &hKey, NULL);
+		if (lRet != ERROR_SUCCESS)
+		{
+            return false;
+		}
+
+		lRet = RegSetValueEx(hKey, cProcessName, 0, REG_SZ, (BYTE*)filename, MAX_PATH);
+		if (lRet != ERROR_SUCCESS)
+		{
+			return false;
+		}
+
+		RegCloseKey(hKey);
+		return true;
+	}
+
+	/**
+	 * @brief 取消开机自运行本程序
+	 *
+	 * @param cProcessName[in] 程序名称
+	 *
+	 * @code
+	 int main(int argc, char* argv[])
+	 {
+	     CSystemHelper::CancelAutoStartup("测试程序");
+
+	     ::system("pause");
+	     return 0;
+	 }
+	 * @endcode
+	 */
+	static bool CancelAutoStartup(const char* cProcessName)
+	{
+		//判断环境是否为WOW64  
+		BOOL isWOW64;
+		REGSAM samDesired;
+		IsWow64Process(GetCurrentProcess(), &isWOW64);
+		samDesired = isWOW64 ? KEY_WRITE | KEY_WOW64_64KEY : KEY_WRITE;
+
+		HKEY hKey;
+		LONG lRet = RegOpenKeyEx(HKEY_LOCAL_MACHINE, TEXT("Software\\Microsoft\\Windows\\CurrentVersion\\Run"), 0, samDesired, &hKey);
+		if (lRet == ERROR_SUCCESS)
+		{
+			RegDeleteValue(hKey, cProcessName);
+			RegCloseKey(hKey);
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * @brief 重新运行一个本程序实例
+	 *
+	 * 可在异常退出时，重启本程序时使用。
+	 *
+	 * @code
+	 int main(int argc, char* argv[])
+	 {
+	     CSystemHelper::ReStartProcess();
+
+	     ::system("pause");
+	     return 0;
+	 }
+	 * @endcode
+	 */
+	static void ReStartProcess()
+	{
+		char szPath[MAX_PATH] = {0};
+		GetModuleFileName(NULL, szPath, MAX_PATH);
+
+		STARTUPINFO startupInfo;
+		PROCESS_INFORMATION procInfo;
+		memset(&startupInfo, 0x00, sizeof(STARTUPINFO));
+		startupInfo.cb = sizeof(STARTUPINFO);
+		::CreateProcess(szPath, NULL, NULL, NULL, FALSE, NORMAL_PRIORITY_CLASS, NULL, NULL, &startupInfo, &procInfo);
+	}
 };
 
 #endif // G_SYSTEMHELPER_H_

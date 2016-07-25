@@ -43,6 +43,17 @@ int main(int argc, char* argv[])
 	testLogHelper();
 	testDumpHelper();
 
+	cout << "请输入restart，测试重新开启一个程序" <<endl;
+	char cParam[32] = { 0 };
+	cin >> cParam;
+	if (strcmp("restart", cParam) == 0)
+	{
+		TEST_FUNC("ReStartProcess()");	
+		CSystemHelper::ReStartProcess();
+		TEST_RES("void");
+		exit(0);
+	}
+
 	::system("pause");
 	return 0;
 }
@@ -62,6 +73,15 @@ void testSystemHelper()
 	TEST_FUNC("DestoryProcess(\"hh.exe\")");
 	CSystemHelper::DestoryProcess("hh.exe");
 	TEST_RES("void");
+
+	TEST_FUNC("SetAutoStartup(\"demo\")");
+	str = CSystemHelper::SetAutoStartup("demo") ? "设置自启动成功" : "设置自启动失败，请查看是否没有管理员权限";
+	TEST_RES(str);
+
+	TEST_FUNC("CancelAutoStartup(\"demo\")");
+	str = CSystemHelper::CancelAutoStartup("demo") ? "取消自启动设置成功" : "取消自启动设置失败，请查看是否没有管理员权限";
+	TEST_RES(str);
+	
 	
 }
 
