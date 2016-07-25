@@ -121,6 +121,30 @@ void testStringHelper()
 	}
 	 
 	TEST_RES(str);
+
+	TEST_FUNC("IsNumberString(\"123\")");
+	str = CStringHelper::IsNumberString(" 123") ? "全为数字" : "不全为数字";
+	TEST_RES(str);
+
+	TEST_FUNC("IsEmailString(\"931047642@qq.com\")");
+	str = CStringHelper::IsEmailString("931047642@qq.com") ? "合法邮箱地址" : "非法邮箱地址";
+	TEST_RES(str);
+
+	TEST_FUNC("IsFixedNumberString(\"0513-12345678\")");
+	str = CStringHelper::IsFixedNumberString("0513-12345678") ? "合法固定电话号码" : "非法固定电话号码";
+	TEST_RES(str);
+
+	TEST_FUNC("IsMobileNumberString(\"13588881234\")");
+	str = CStringHelper::IsMobileNumberString("13588881234") ? "合法手机电话号码" : "非法手机电话号码";
+	TEST_RES(str);
+
+	TEST_FUNC("IsLongTimeString(\"2016-07-25 10:00:00\")");
+	str = CStringHelper::IsLongTimeString("2016-07-25 10:00:00") ? "合法长时间格式" : "非法长时间格式";
+	TEST_RES(str);
+
+	TEST_FUNC("IsIPString(\"127.0.0.1\")");
+	str = CStringHelper::IsIPString("127.0.0.1") ? "合法IP地址" : "非法IP地址";
+	TEST_RES(str);	
 }
 
 void testTimeHelper()
