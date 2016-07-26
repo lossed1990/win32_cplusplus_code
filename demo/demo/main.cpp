@@ -145,6 +145,11 @@ void testStringHelper()
 	TEST_FUNC("IsIPString(\"127.0.0.1\")");
 	str = CStringHelper::IsIPString("127.0.0.1") ? "合法IP地址" : "非法IP地址";
 	TEST_RES(str);	
+
+	TEST_FUNC("Md5String(\"abc\")");
+	str = CStringHelper::Md5String("abc");
+	TEST_RES(str);
+	
 }
 
 void testTimeHelper()

@@ -7,9 +7,12 @@
 #ifndef G_STRINGHELPER_H_
 #define G_STRINGHELPER_H_
 
+#include <sstream>
 #include <string>
 #include <vector>
 #include <regex>
+
+#include "hashtool/hi_md5.h"
 using namespace std;
 
 /**
@@ -202,6 +205,42 @@ public:
 	{
 		regex pattern("^((?:(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d)\\.){3}(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d))$");
 		return regex_match(chStr, pattern);
+	}
+
+	/**
+	 * @brief Ê¹ÓÃMD5Ëã·¨×ª»»×Ö·û´®
+	 *
+	 * @param chStr[in]  ´ý×ª»»µÄ×Ö·û´®
+	 *
+	 * @code
+	 int main(int argc, char* argv[])
+	 {
+	     string str = CStringHelper::Md5String("abc");
+
+	     ::system("pause");
+	     return 0;
+	 }
+	 * @endcode
+	 */
+	static string Md5String(const char* chStr)
+	{
+		HL_MD5_CTX ctx;
+		MD5 md5;
+		md5.MD5Init(&ctx);
+		md5.MD5Update(&ctx, (unsigned char*)chStr, strlen(chStr));
+
+		unsigned char buff[16] = "";
+		md5.MD5Final((unsigned char*)buff, &ctx);
+
+		std::ostringstream os;
+		for (int i = 0; i < 16; ++i)
+		{
+			os.width(2);
+			os.fill('0');
+			os << std::hex << static_cast<unsigned int>(buff[i]);
+		}
+
+		return os.str();
 	}
 };
 
