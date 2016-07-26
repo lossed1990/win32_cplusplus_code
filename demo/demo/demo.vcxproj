@@ -88,6 +88,7 @@
     <ClInclude Include="..\..\StringHelper.h" />
     <ClInclude Include="..\..\SystemHelper.h" />
     <ClInclude Include="..\..\TimeHelper.h" />
+    <ClInclude Include="..\..\TTSHelper.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -12,6 +12,7 @@
 #include "../../TimeHelper.h"
 #include "../../LogHelper.h"
 #include "../../DumpHelper.h"
+#include "../../TTSHelper.h"
 
 #define TEST_BEGIN(str) SetColor(10,0);(cout<<"====begin "<<(str)<<endl)
 #define TEST_FUNC(str) SetColor(15,0);(cout<<"@function>> "<<(str)<<endl)
@@ -25,6 +26,7 @@ void testStringHelper();
 void testTimeHelper();
 void testLogHelper();
 void testDumpHelper();
+void testTTSHelper();
 
 void SetColor(unsigned short forecolor = 4, unsigned short backgroudcolor = 0)
 {
@@ -37,12 +39,13 @@ void SetColor(unsigned short forecolor = 4, unsigned short backgroudcolor = 0)
 int main(int argc, char* argv[])
 {
 	testSystemHelper();
+	testTTSHelper();
 	testFileHelper();
 	testStringHelper();
 	testTimeHelper();
 	testLogHelper();
 	testDumpHelper();
-
+	
 	cout << "请输入restart，测试重新开启一个程序" <<endl;
 	char cParam[32] = { 0 };
 	cin >> cParam;
@@ -189,3 +192,11 @@ void testDumpHelper()
 	//*i = 0;
 }
 
+void testTTSHelper()
+{
+	TEST_BEGIN("testTTSHelper");
+
+	TEST_FUNC("TTSHelper::Instance()->Speak(\"hello world\")");
+	TTSHelper::Instance()->Speak("hello world");
+	TEST_RES("程序结束时，请注意调用TTSHelper::FreeInstance()释放资源");
+}
