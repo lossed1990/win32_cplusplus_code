@@ -1,21 +1,23 @@
-## win32_cplusplus_code
-windowsä¸‹å¸¸ç”¨c++ä»£ç æ•´ç†ï¼Œç”¨ä»¥ä¹‹åŽå¿«é€Ÿæ­å»ºé¡¹ç›®
+##win32_cplusplus_code##
 
-#ä¸»è¦å¸®åŠ©æ–‡ä»¶å¦‚ä¸‹ï¼š
-**ã€‚SystemHelper.hã€ç³»ç»Ÿå¸¸è§æ“ä½œå‡½æ•°ã€‘**
+windowsÏÂ³£ÓÃc++´úÂëÕûÀí£¬ÓÃÒÔÖ®ºó¿ìËÙ´î½¨ÏîÄ¿
 
+##Ö÷Òª°ïÖúÎÄ¼þÈçÏÂ£º##
 
-**ã€‚FileHelper.hã€æ–‡ä»¶å¸¸è§æ“ä½œå‡½æ•°ã€‘**
-
-
-**ã€‚StringHelper.hã€å­—ç¬¦å¸¸è§æ“ä½œå‡½æ•°ã€‘**
+**¡£SystemHelper.h¡¾ÏµÍ³³£¼û²Ù×÷º¯Êý¡¿**
 
 
-**ã€‚TimeHelper.hã€æ—¶é—´å¸¸è§æ“ä½œå‡½æ•°ã€‘**
+**¡£FileHelper.h¡¾ÎÄ¼þ³£¼û²Ù×÷º¯Êý¡¿**
 
 
-**ã€‚LogHelper.hã€æ—¥å¿—è®°å½•å¸®åŠ©ç±»ã€‘**
+**¡£StringHelper.h¡¾×Ö·û³£¼û²Ù×÷º¯Êý¡¿**
 
 
-**ã€‚DumpHelper.hã€dumpç”Ÿæˆå¸®åŠ©ç±»ã€‘**
+**¡£TimeHelper.h¡¾Ê±¼ä³£¼û²Ù×÷º¯Êý¡¿**
+
+
+**¡£LogHelper.h¡¾ÈÕÖ¾¼ÇÂ¼°ïÖúÀà¡¿**
+
+
+**¡£DumpHelper.h¡¾dumpÉú³É°ïÖúÀà¡¿**
 
