@@ -253,6 +253,27 @@ public:
 		startupInfo.cb = sizeof(STARTUPINFO);
 		::CreateProcess(szPath, NULL, NULL, NULL, FALSE, NORMAL_PRIORITY_CLASS, NULL, NULL, &startupInfo, &procInfo);
 	}
+
+
+	/**
+	 * @brief 打开某个文件夹
+	 *
+	 * @param chPath[in] 文件夹路径
+	 *
+	 * @code
+	 int main(int argc, char* argv[])
+	 {
+	     CSystemHelper::OpenFolder("c://");
+
+	     ::system("pause");
+	     return 0;
+	 }
+	 * @endcode
+	 */
+	static void OpenFolder(const char* chPath)
+	{
+		ShellExecute(NULL, NULL, "explorer", chPath, NULL, SW_SHOW);
+	}
 };
 
 #endif // G_SYSTEMHELPER_H_

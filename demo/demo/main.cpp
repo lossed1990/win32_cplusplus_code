@@ -38,6 +38,9 @@ void SetColor(unsigned short forecolor = 4, unsigned short backgroudcolor = 0)
 
 int main(int argc, char* argv[])
 {
+	
+	//ShellExecute(NULL, "open", "E:\\MyCode\\win32_cplusplus_code", NULL, NULL, SW_SHOW);
+
 	testSystemHelper();
 	testTTSHelper();
 	testFileHelper();
@@ -85,6 +88,9 @@ void testSystemHelper()
 	str = CSystemHelper::CancelAutoStartup("demo") ? "取消自启动设置成功" : "取消自启动设置失败，请查看是否没有管理员权限";
 	TEST_RES(str);
 	
+	TEST_FUNC("OpenFolder(\"c:\\\")");
+	CSystemHelper::OpenFolder("c:\\");
+	TEST_RES("已经尝试打开c盘根目录");
 	
 }
 
