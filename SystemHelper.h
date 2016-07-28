@@ -107,6 +107,32 @@ public:
 	}
 
 	/**
+	 * @brief 开启进程
+	 *
+	 * @param cProcessPath[in] 进程路径
+	 *
+	 * @code
+	 int main(int argc, char* argv[])
+	 {
+	     CSystemHelper::OpenProcess("c:\\demo.exe");
+
+	     ::system("pause");
+	     return 0;
+	 }
+	 * @endcode
+	 */
+	static void OpenProcess(char* cProcessPath)
+	{
+		PROCESS_INFORMATION processInfo;
+		STARTUPINFO startupInfo;
+		::ZeroMemory(&startupInfo, sizeof(startupInfo));
+		startupInfo.cb = sizeof(startupInfo);
+	
+		::CreateProcess(NULL, cProcessPath, NULL, NULL, FALSE,
+			0, NULL, NULL, &startupInfo, &processInfo);
+	}
+
+	/**
 	 * @brief 销毁进程
 	 *
 	 * @param cProcessName[in] 进程名称

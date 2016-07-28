@@ -38,9 +38,6 @@ void SetColor(unsigned short forecolor = 4, unsigned short backgroudcolor = 0)
 
 int main(int argc, char* argv[])
 {
-	
-	//ShellExecute(NULL, "open", "E:\\MyCode\\win32_cplusplus_code", NULL, NULL, SW_SHOW);
-
 	testSystemHelper();
 	testTTSHelper();
 	testFileHelper();
@@ -75,6 +72,10 @@ void testSystemHelper()
 	TEST_FUNC("CheckProcessExist(\"firefox.exe\")");
 	str = CSystemHelper::CheckProcessExist("firefox.exe") ? "firefox.exe进程存在" : "firefox.exe进程不存在";
 	TEST_RES(str);
+
+	TEST_FUNC("OpenProcess(\"calc\")");
+	CSystemHelper::OpenProcess("calc");
+	TEST_RES("已尝试打开计算器程序");
 
 	TEST_FUNC("DestoryProcess(\"hh.exe\")");
 	CSystemHelper::DestoryProcess("hh.exe");
