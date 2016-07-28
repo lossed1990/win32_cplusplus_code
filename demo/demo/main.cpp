@@ -157,7 +157,11 @@ void testStringHelper()
 
 void testTimeHelper()
 {
-
+	TEST_BEGIN("CTimeCounter");
+	TEST_FUNC("CTimeCounter::GetExecutionTime()");
+	CTimeCounter newTimeCounter;
+	Sleep(501);
+	cout << "@result>> " << "ÔËÐÐºÄÊ±:" << newTimeCounter.GetExecutionTime() << endl << endl;
 }
 
 void testLogHelper()
