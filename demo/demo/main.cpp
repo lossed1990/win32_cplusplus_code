@@ -226,6 +226,30 @@ void testTimeHelper()
 		sTimes.s_EndTime.wDayOfWeek
 		);
 	TEST_RES(str);
+
+	TEST_FUNC("CTimeHelper::ThisMonth()");
+	CTimeHelper::ThisMonth(sTimes);
+	sprintf_s(str, 128, "begin:%04d-%02d-%02d %02d:%02d:%02d 星期:%d;end:%04d-%02d-%02d %02d:%02d:%02d 星期:%d",
+		sTimes.s_BeginTime.wYear, sTimes.s_BeginTime.wMonth, sTimes.s_BeginTime.wDay,
+		sTimes.s_BeginTime.wHour, sTimes.s_BeginTime.wMinute, sTimes.s_BeginTime.wSecond,
+		sTimes.s_BeginTime.wDayOfWeek,
+		sTimes.s_EndTime.wYear, sTimes.s_EndTime.wMonth, sTimes.s_EndTime.wDay,
+		sTimes.s_EndTime.wHour, sTimes.s_EndTime.wMinute, sTimes.s_EndTime.wSecond,
+		sTimes.s_EndTime.wDayOfWeek
+		);
+	TEST_RES(str);
+
+	TEST_FUNC("CTimeHelper::LastMonth()");
+	CTimeHelper::LastMonth(sTimes);
+	sprintf_s(str, 128, "begin:%04d-%02d-%02d %02d:%02d:%02d 星期:%d;end:%04d-%02d-%02d %02d:%02d:%02d 星期:%d",
+		sTimes.s_BeginTime.wYear, sTimes.s_BeginTime.wMonth, sTimes.s_BeginTime.wDay,
+		sTimes.s_BeginTime.wHour, sTimes.s_BeginTime.wMinute, sTimes.s_BeginTime.wSecond,
+		sTimes.s_BeginTime.wDayOfWeek,
+		sTimes.s_EndTime.wYear, sTimes.s_EndTime.wMonth, sTimes.s_EndTime.wDay,
+		sTimes.s_EndTime.wHour, sTimes.s_EndTime.wMinute, sTimes.s_EndTime.wSecond,
+		sTimes.s_EndTime.wDayOfWeek
+		);
+	TEST_RES(str);
 	
 	TEST_BEGIN("CTimeCounter");
 	TEST_FUNC("CTimeCounter::GetExecutionTime()");

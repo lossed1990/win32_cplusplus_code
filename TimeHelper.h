@@ -329,6 +329,118 @@ public:
 		sTimes.s_EndTime.wDayOfWeek = tm_EndDay.tm_wday;
 		sTimes.s_EndTime.wMilliseconds = 0;
 	}
+
+	/**
+	 * @brief 获取本月时间区间
+	 *
+	 * 获取系统本月年月日，并返回00:00:00至当前时间区间（包含星期 0-周日 1-周一 以此类推）
+	 *
+	 * @code
+	 int main(int argc, char* argv[])
+	 {
+	     G_TIMES sTimes;
+	     CTimeHelper::ThisMonth(sTimes);
+
+	     char str[128] = {0};
+	     sprintf_s(str, 128, "begin:%04d-%02d-%02d %02d:%02d:%02d 星期:%d;end:%04d-%02d-%02d %02d:%02d:%02d 星期:%d",
+	                         sTimes.s_BeginTime.wYear,sTimes.s_BeginTime.wMonth,sTimes.s_BeginTime.wDay,
+	                         sTimes.s_BeginTime.wHour,sTimes.s_BeginTime.wMinute,sTimes.s_BeginTime.wSecond,
+	                         sTimes.s_BeginTime.wDayOfWeek,
+	                         sTimes.s_EndTime.wYear,sTimes.s_EndTime.wMonth,sTimes.s_EndTime.wDay,
+	                         sTimes.s_EndTime.wHour,sTimes.s_EndTime.wMinute,sTimes.s_EndTime.wSecond,
+	                         sTimes.s_EndTime.wDayOfWeek
+	     );
+
+	     ::system("pause");
+	     return 0;
+	 }
+	 * @endcode
+	 */
+	static void ThisMonth(G_TIMES &sTimes)
+	{
+		GetLocalTime(&sTimes.s_EndTime);
+
+		int nDays = sTimes.s_EndTime.wDay - 1;  //距月初天数
+		int nDayOfWeek = sTimes.s_EndTime.wDayOfWeek - nDays % 7;
+
+		sTimes.s_BeginTime.wYear = sTimes.s_EndTime.wYear;
+		sTimes.s_BeginTime.wMonth = sTimes.s_EndTime.wMonth;
+		sTimes.s_BeginTime.wDay = 1;
+		sTimes.s_BeginTime.wHour = 0;
+		sTimes.s_BeginTime.wMinute = 0;
+		sTimes.s_BeginTime.wSecond = 0;
+		sTimes.s_BeginTime.wDayOfWeek = (nDayOfWeek < 0) ? nDayOfWeek + 7 : nDayOfWeek;
+		sTimes.s_BeginTime.wMilliseconds = 0;
+	}
+
+	/**
+	 * @brief 获取上月时间区间
+	 *
+	 * 推算系统上月年月日，并返回00:00:00至23:59:59的时间区间（包含星期 0-周日 1-周一 以此类推）
+	 *
+	 * @code
+	 int main(int argc, char* argv[])
+	 {
+	     G_TIMES sTimes;
+	     CTimeHelper::LastMonth(sTimes);
+
+	     char str[128] = {0};
+	     sprintf_s(str, 128, "begin:%04d-%02d-%02d %02d:%02d:%02d 星期:%d;end:%04d-%02d-%02d %02d:%02d:%02d 星期:%d",
+	                         sTimes.s_BeginTime.wYear,sTimes.s_BeginTime.wMonth,sTimes.s_BeginTime.wDay,
+	                         sTimes.s_BeginTime.wHour,sTimes.s_BeginTime.wMinute,sTimes.s_BeginTime.wSecond,
+	                         sTimes.s_BeginTime.wDayOfWeek,
+	                         sTimes.s_EndTime.wYear,sTimes.s_EndTime.wMonth,sTimes.s_EndTime.wDay,
+	                         sTimes.s_EndTime.wHour,sTimes.s_EndTime.wMinute,sTimes.s_EndTime.wSecond,
+	                         sTimes.s_EndTime.wDayOfWeek
+	     );
+
+	     ::system("pause");
+	     return 0;
+	 }
+	 * @endcode
+	 */
+	static void LastMonth(G_TIMES &sTimes)
+	{
+		SYSTEMTIME tNowTime;
+		GetLocalTime(&tNowTime);
+
+		//本月初日期
+		time_t time_thismonthbegin = {0};
+		tm tm_ThisMonthBegin;
+		tm_ThisMonthBegin.tm_year = tNowTime.wYear - 1900;
+		tm_ThisMonthBegin.tm_mon = tNowTime.wMonth - 1;
+		tm_ThisMonthBegin.tm_mday = 1;
+		tm_ThisMonthBegin.tm_hour = 12;
+		tm_ThisMonthBegin.tm_min = 0;
+		tm_ThisMonthBegin.tm_sec = 0;
+		time_thismonthbegin = mktime(&tm_ThisMonthBegin);
+
+		time_t time_endday = time_thismonthbegin - 24 * 60 * 60;  //上月末秒数
+		tm tm_EndDay;
+		localtime_s(&tm_EndDay, &time_endday);
+
+		time_t time_beginday = time_thismonthbegin - 24 * 60 * 60 * tm_EndDay.tm_mday;
+		tm tm_BeginDay;
+		localtime_s(&tm_BeginDay, &time_beginday);
+
+		sTimes.s_BeginTime.wYear = tm_BeginDay.tm_year + 1900;
+		sTimes.s_BeginTime.wMonth = tm_BeginDay.tm_mon + 1;
+		sTimes.s_BeginTime.wDay = tm_BeginDay.tm_mday;
+		sTimes.s_BeginTime.wHour = 0;
+		sTimes.s_BeginTime.wMinute = 0;
+		sTimes.s_BeginTime.wSecond = 0;
+		sTimes.s_BeginTime.wDayOfWeek = tm_BeginDay.tm_wday;
+		sTimes.s_BeginTime.wMilliseconds = 0;
+
+		sTimes.s_EndTime.wYear = tm_EndDay.tm_year + 1900;
+		sTimes.s_EndTime.wMonth = tm_EndDay.tm_mon + 1;
+		sTimes.s_EndTime.wDay = tm_EndDay.tm_mday;
+		sTimes.s_EndTime.wHour = 23;
+		sTimes.s_EndTime.wMinute = 59;
+		sTimes.s_EndTime.wSecond = 59;
+		sTimes.s_EndTime.wDayOfWeek = tm_EndDay.tm_wday;
+		sTimes.s_EndTime.wMilliseconds = 0;
+	}
 };
 
 #endif // G_TIMEHELPER_H_
