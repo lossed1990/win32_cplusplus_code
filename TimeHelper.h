@@ -441,6 +441,258 @@ public:
 		sTimes.s_EndTime.wDayOfWeek = tm_EndDay.tm_wday;
 		sTimes.s_EndTime.wMilliseconds = 0;
 	}
+
+	/**
+	 * @brief 获取本季度时间区间
+	 *
+	 * 获取系统本季度年月日，并返回00:00:00至当前时间区间（包含星期 0-周日 1-周一 以此类推）
+	 *
+	 * @code
+	 int main(int argc, char* argv[])
+	 {
+	     G_TIMES sTimes;
+	     CTimeHelper::ThisQuarter(sTimes);
+
+	     char str[128] = {0};
+	     sprintf_s(str, 128, "begin:%04d-%02d-%02d %02d:%02d:%02d 星期:%d;end:%04d-%02d-%02d %02d:%02d:%02d 星期:%d",
+	                         sTimes.s_BeginTime.wYear,sTimes.s_BeginTime.wMonth,sTimes.s_BeginTime.wDay,
+	                         sTimes.s_BeginTime.wHour,sTimes.s_BeginTime.wMinute,sTimes.s_BeginTime.wSecond,
+	                         sTimes.s_BeginTime.wDayOfWeek,
+	                         sTimes.s_EndTime.wYear,sTimes.s_EndTime.wMonth,sTimes.s_EndTime.wDay,
+	                         sTimes.s_EndTime.wHour,sTimes.s_EndTime.wMinute,sTimes.s_EndTime.wSecond,
+	                         sTimes.s_EndTime.wDayOfWeek
+	     );
+
+	     ::system("pause");
+	     return 0;
+	 }
+	 * @endcode
+	 */
+	static void ThisQuarter(G_TIMES &sTimes)
+	{
+		GetLocalTime(&sTimes.s_EndTime);
+		
+		int nMonth = (sTimes.s_EndTime.wMonth % 3 != 0) ? ((sTimes.s_EndTime.wMonth / 3) * 3 + 1) : sTimes.s_EndTime.wMonth - 2;
+
+		sTimes.s_BeginTime.wYear = sTimes.s_EndTime.wYear;
+		sTimes.s_BeginTime.wMonth = nMonth;
+		sTimes.s_BeginTime.wDay = 1;
+		sTimes.s_BeginTime.wHour = 0;
+		sTimes.s_BeginTime.wMinute = 0;
+		sTimes.s_BeginTime.wSecond = 0;
+		sTimes.s_BeginTime.wMilliseconds = 0;
+
+		time_t time_thisquarterbegin = { 0 };
+		tm tm_ThisQuarterBegin;
+		tm_ThisQuarterBegin.tm_year = sTimes.s_EndTime.wYear - 1900;
+		tm_ThisQuarterBegin.tm_mon = nMonth - 1;
+		tm_ThisQuarterBegin.tm_mday = 1;
+		tm_ThisQuarterBegin.tm_hour = 12;
+		tm_ThisQuarterBegin.tm_min = 0;
+		tm_ThisQuarterBegin.tm_sec = 0;
+		time_thisquarterbegin = mktime(&tm_ThisQuarterBegin);
+		localtime_s(&tm_ThisQuarterBegin, &time_thisquarterbegin);
+
+		sTimes.s_BeginTime.wDayOfWeek = tm_ThisQuarterBegin.tm_wday;
+	}
+
+	/**
+	 * @brief 获取上季度时间区间
+	 *
+	 * 推算系统上季度年月日，并返回00:00:00至23:59:59的时间区间（包含星期 0-周日 1-周一 以此类推）
+	 *
+	 * @code
+	 int main(int argc, char* argv[])
+	 {
+	     G_TIMES sTimes;
+	     CTimeHelper::LastQuarter(sTimes);
+
+	     char str[128] = {0};
+	     sprintf_s(str, 128, "begin:%04d-%02d-%02d %02d:%02d:%02d 星期:%d;end:%04d-%02d-%02d %02d:%02d:%02d 星期:%d",
+	                         sTimes.s_BeginTime.wYear,sTimes.s_BeginTime.wMonth,sTimes.s_BeginTime.wDay,
+	                         sTimes.s_BeginTime.wHour,sTimes.s_BeginTime.wMinute,sTimes.s_BeginTime.wSecond,
+	                         sTimes.s_BeginTime.wDayOfWeek,
+	                         sTimes.s_EndTime.wYear,sTimes.s_EndTime.wMonth,sTimes.s_EndTime.wDay,
+	                         sTimes.s_EndTime.wHour,sTimes.s_EndTime.wMinute,sTimes.s_EndTime.wSecond,
+	                         sTimes.s_EndTime.wDayOfWeek
+	     );
+
+	     ::system("pause");
+	     return 0;
+	 }
+	 * @endcode
+	 */
+	static void LastQuarter(G_TIMES &sTimes)
+	{
+		SYSTEMTIME tNowTime;
+		GetLocalTime(&tNowTime);
+
+		int nBeginMonth;
+		int nThisQuarterBeginMonth = (tNowTime.wMonth % 3 != 0) ? ((tNowTime.wMonth / 3) * 3 + 1) : tNowTime.wMonth - 2;
+		nBeginMonth = (nThisQuarterBeginMonth - 3 < 0) ? 10 : nThisQuarterBeginMonth - 3;
+
+		sTimes.s_BeginTime.wYear = (nBeginMonth == 10) ? tNowTime.wYear - 1 : tNowTime.wYear;
+		sTimes.s_BeginTime.wMonth = nBeginMonth;
+		sTimes.s_BeginTime.wDay = 1;
+		sTimes.s_BeginTime.wHour = 0;
+		sTimes.s_BeginTime.wMinute = 0;
+		sTimes.s_BeginTime.wSecond = 0;
+		sTimes.s_BeginTime.wMilliseconds = 0;
+
+		sTimes.s_EndTime.wYear = sTimes.s_BeginTime.wYear;
+		sTimes.s_EndTime.wMonth = nBeginMonth + 2;
+		sTimes.s_EndTime.wDay = (nBeginMonth == 1 || nBeginMonth == 10) ? 31 : 30;
+		sTimes.s_EndTime.wHour = 23;
+		sTimes.s_EndTime.wMinute = 59;
+		sTimes.s_EndTime.wSecond = 59;
+		sTimes.s_EndTime.wMilliseconds = 0;
+
+		//计算周几
+		time_t time_thisquarterbegin = { 0 };
+		tm tm_ThisQuarterBegin;
+		tm_ThisQuarterBegin.tm_year = sTimes.s_BeginTime.wYear - 1900;
+		tm_ThisQuarterBegin.tm_mon = sTimes.s_BeginTime.wMonth - 1;
+		tm_ThisQuarterBegin.tm_mday = sTimes.s_BeginTime.wDay;
+		tm_ThisQuarterBegin.tm_hour = 12;
+		tm_ThisQuarterBegin.tm_min = 0;
+		tm_ThisQuarterBegin.tm_sec = 0;
+		time_thisquarterbegin = mktime(&tm_ThisQuarterBegin);
+		localtime_s(&tm_ThisQuarterBegin, &time_thisquarterbegin);
+		sTimes.s_BeginTime.wDayOfWeek = tm_ThisQuarterBegin.tm_wday;
+
+		tm_ThisQuarterBegin.tm_year = sTimes.s_EndTime.wYear - 1900;
+		tm_ThisQuarterBegin.tm_mon = sTimes.s_EndTime.wMonth - 1;
+		tm_ThisQuarterBegin.tm_mday = sTimes.s_EndTime.wDay;
+		tm_ThisQuarterBegin.tm_hour = 12;
+		tm_ThisQuarterBegin.tm_min = 0;
+		tm_ThisQuarterBegin.tm_sec = 0;
+		time_thisquarterbegin = mktime(&tm_ThisQuarterBegin);
+		localtime_s(&tm_ThisQuarterBegin, &time_thisquarterbegin);
+		sTimes.s_EndTime.wDayOfWeek = tm_ThisQuarterBegin.tm_wday;
+	}
+
+	/**
+	 * @brief 获取本年时间区间
+	 *
+	 * 获取系统本年年月日，并返回00:00:00至当前时间区间（包含星期 0-周日 1-周一 以此类推）
+	 *
+	 * @code
+	 int main(int argc, char* argv[])
+	 {
+	     G_TIMES sTimes;
+	     CTimeHelper::ThisYear(sTimes);
+
+	     char str[128] = {0};
+	     sprintf_s(str, 128, "begin:%04d-%02d-%02d %02d:%02d:%02d 星期:%d;end:%04d-%02d-%02d %02d:%02d:%02d 星期:%d",
+	                         sTimes.s_BeginTime.wYear,sTimes.s_BeginTime.wMonth,sTimes.s_BeginTime.wDay,
+	                         sTimes.s_BeginTime.wHour,sTimes.s_BeginTime.wMinute,sTimes.s_BeginTime.wSecond,
+	                         sTimes.s_BeginTime.wDayOfWeek,
+	                         sTimes.s_EndTime.wYear,sTimes.s_EndTime.wMonth,sTimes.s_EndTime.wDay,
+	                         sTimes.s_EndTime.wHour,sTimes.s_EndTime.wMinute,sTimes.s_EndTime.wSecond,
+	                         sTimes.s_EndTime.wDayOfWeek
+	     );
+
+	     ::system("pause");
+	     return 0;
+	 }
+	 * @endcode
+	 */
+	static void ThisYear(G_TIMES &sTimes)
+	{
+		GetLocalTime(&sTimes.s_EndTime);
+		
+		sTimes.s_BeginTime.wYear = sTimes.s_EndTime.wYear;
+		sTimes.s_BeginTime.wMonth = 1;
+		sTimes.s_BeginTime.wDay = 1;
+		sTimes.s_BeginTime.wHour = 0;
+		sTimes.s_BeginTime.wMinute = 0;
+		sTimes.s_BeginTime.wSecond = 0;
+		sTimes.s_BeginTime.wMilliseconds = 0;
+
+		time_t time_thisyearbegin = { 0 };
+		tm tm_ThisYearBegin;
+		tm_ThisYearBegin.tm_year = sTimes.s_EndTime.wYear - 1900;
+		tm_ThisYearBegin.tm_mon = 0;
+		tm_ThisYearBegin.tm_mday = 1;
+		tm_ThisYearBegin.tm_hour = 12;
+		tm_ThisYearBegin.tm_min = 0;
+		tm_ThisYearBegin.tm_sec = 0;
+		time_thisyearbegin = mktime(&tm_ThisYearBegin);
+		localtime_s(&tm_ThisYearBegin, &time_thisyearbegin);
+
+		sTimes.s_BeginTime.wDayOfWeek = tm_ThisYearBegin.tm_wday;
+	}
+
+	/**
+	 * @brief 获取上年时间区间
+	 *
+	 * 推算系统上年年月日，并返回00:00:00至23:59:59的时间区间（包含星期 0-周日 1-周一 以此类推）
+	 *
+	 * @code
+	 int main(int argc, char* argv[])
+	 {
+	     G_TIMES sTimes;
+	     CTimeHelper::LastYear(sTimes);
+
+	     char str[128] = {0};
+	     sprintf_s(str, 128, "begin:%04d-%02d-%02d %02d:%02d:%02d 星期:%d;end:%04d-%02d-%02d %02d:%02d:%02d 星期:%d",
+	                         sTimes.s_BeginTime.wYear,sTimes.s_BeginTime.wMonth,sTimes.s_BeginTime.wDay,
+	                         sTimes.s_BeginTime.wHour,sTimes.s_BeginTime.wMinute,sTimes.s_BeginTime.wSecond,
+	                         sTimes.s_BeginTime.wDayOfWeek,
+	                         sTimes.s_EndTime.wYear,sTimes.s_EndTime.wMonth,sTimes.s_EndTime.wDay,
+	                         sTimes.s_EndTime.wHour,sTimes.s_EndTime.wMinute,sTimes.s_EndTime.wSecond,
+	                         sTimes.s_EndTime.wDayOfWeek
+	     );
+
+	     ::system("pause");
+	     return 0;
+	 }
+	 * @endcode
+	 */
+	static void LastYear(G_TIMES &sTimes)
+	{
+		SYSTEMTIME tNowTime;
+		GetLocalTime(&tNowTime);
+
+		sTimes.s_BeginTime.wYear = tNowTime.wYear - 1;
+		sTimes.s_BeginTime.wMonth = 1;
+		sTimes.s_BeginTime.wDay = 1;
+		sTimes.s_BeginTime.wHour = 0;
+		sTimes.s_BeginTime.wMinute = 0;
+		sTimes.s_BeginTime.wSecond = 0;
+		sTimes.s_BeginTime.wMilliseconds = 0;
+
+		sTimes.s_EndTime.wYear = sTimes.s_BeginTime.wYear;
+		sTimes.s_EndTime.wMonth = 12;
+		sTimes.s_EndTime.wDay = 31;
+		sTimes.s_EndTime.wHour = 23;
+		sTimes.s_EndTime.wMinute = 59;
+		sTimes.s_EndTime.wSecond = 59;
+		sTimes.s_EndTime.wMilliseconds = 0;
+
+		//计算周几
+		time_t time_thisyear = { 0 };
+		tm tm_ThisYear;
+		tm_ThisYear.tm_year = sTimes.s_BeginTime.wYear - 1900;
+		tm_ThisYear.tm_mon = sTimes.s_BeginTime.wMonth - 1;
+		tm_ThisYear.tm_mday = sTimes.s_BeginTime.wDay;
+		tm_ThisYear.tm_hour = 12;
+		tm_ThisYear.tm_min = 0;
+		tm_ThisYear.tm_sec = 0;
+		time_thisyear = mktime(&tm_ThisYear);
+		localtime_s(&tm_ThisYear, &time_thisyear);
+		sTimes.s_BeginTime.wDayOfWeek = tm_ThisYear.tm_wday;
+
+		tm_ThisYear.tm_year = sTimes.s_EndTime.wYear - 1900;
+		tm_ThisYear.tm_mon = sTimes.s_EndTime.wMonth - 1;
+		tm_ThisYear.tm_mday = sTimes.s_EndTime.wDay;
+		tm_ThisYear.tm_hour = 12;
+		tm_ThisYear.tm_min = 0;
+		tm_ThisYear.tm_sec = 0;
+		time_thisyear = mktime(&tm_ThisYear);
+		localtime_s(&tm_ThisYear, &time_thisyear);
+		sTimes.s_EndTime.wDayOfWeek = tm_ThisYear.tm_wday;
+	}
 };
 
 #endif // G_TIMEHELPER_H_
