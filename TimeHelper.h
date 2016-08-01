@@ -67,6 +67,46 @@ public:
 
 public:
 	/**
+	 * @brief 获取当日时间区间
+	 *
+	 * 获取系统当前年月日，并返回00:00:00至当前时间区间（包含星期 0-周日 1-周一 以此类推）
+	 *
+	 * @code
+	 int main(int argc, char* argv[])
+	 {
+	     G_TIMES sTimes;
+	     CTimeHelper::ThisDay(sTimes);
+
+	     char str[128] = {0};
+	     sprintf_s(str, 128, "begin:%04d-%02d-%02d %02d:%02d:%02d 星期:%d;end:%04d-%02d-%02d %02d:%02d:%02d 星期:%d",
+	                          sTimes.s_BeginTime.wYear,sTimes.s_BeginTime.wMonth,sTimes.s_BeginTime.wDay,
+	                          sTimes.s_BeginTime.wHour,sTimes.s_BeginTime.wMinute,sTimes.s_BeginTime.wSecond,
+	                          sTimes.s_BeginTime.wDayOfWeek,
+	                          sTimes.s_EndTime.wYear,sTimes.s_EndTime.wMonth,sTimes.s_EndTime.wDay,
+	                          sTimes.s_EndTime.wHour,sTimes.s_EndTime.wMinute,sTimes.s_EndTime.wSecond,
+	                          sTimes.s_EndTime.wDayOfWeek
+	     );
+
+	     ::system("pause");
+	     return 0;
+	 }
+	 * @endcode
+	 */
+	static void ThisDay(G_TIMES &sTimes)
+	{
+		GetLocalTime(&sTimes.s_EndTime);
+
+		sTimes.s_BeginTime.wYear = sTimes.s_EndTime.wYear;
+		sTimes.s_BeginTime.wMonth = sTimes.s_EndTime.wMonth;
+		sTimes.s_BeginTime.wDay = sTimes.s_EndTime.wDay;
+		sTimes.s_BeginTime.wHour = 0;
+		sTimes.s_BeginTime.wMinute = 0;
+		sTimes.s_BeginTime.wSecond = 0;
+		sTimes.s_BeginTime.wDayOfWeek = sTimes.s_EndTime.wDayOfWeek;
+		sTimes.s_BeginTime.wMilliseconds = 0;
+	}
+
+	/**
 	 * @brief 获取昨日时间区间
 	 * 
 	 * 推算昨天的年月日，并返回00:00:00至23:59:59的时间区间（包含星期 0-周日 1-周一 以此类推）
@@ -75,7 +115,7 @@ public:
 	 int main(int argc, char* argv[])
 	 {
 	     G_TIMES sTimes;
-	     CTimeHelper::Lastday(sTimes);
+	     CTimeHelper::LastDay(sTimes);
 	  
 	     char str[128] = {0};
 	     sprintf_s(str, 128, "begin:%04d-%02d-%02d %02d:%02d:%02d 星期:%d;end:%04d-%02d-%02d %02d:%02d:%02d 星期:%d",
@@ -92,7 +132,7 @@ public:
 	 }
 	 * @endcode
 	 */
-	static void Lastday(G_TIMES &sTimes)
+	static void LastDay(G_TIMES &sTimes)
 	{
 		time_t time_now;
 		time(&time_now);
@@ -117,6 +157,70 @@ public:
 		sTimes.s_EndTime.wMinute = 59;
 		sTimes.s_EndTime.wSecond = 59;
 		sTimes.s_EndTime.wDayOfWeek = tm_LastDay.tm_wday;
+		sTimes.s_EndTime.wMilliseconds = 0;
+	}
+
+	/**
+	 * @brief 获取前几日时间区间
+	 *
+	 * 推算前几日的年月日（不包含今日），并返回00:00:00至23:59:59的时间区间（包含星期 0-周日 1-周一 以此类推）
+	 *
+	 * @code
+	 int main(int argc, char* argv[])
+	 {
+	     G_TIMES sTimes;
+	     CTimeHelper::LastDays(sTimes,3);  //获取最近3天的时间区间
+
+	     char str[128] = {0};
+	     sprintf_s(str, 128, "begin:%04d-%02d-%02d %02d:%02d:%02d 星期:%d;end:%04d-%02d-%02d %02d:%02d:%02d 星期:%d",
+	                         sTimes.s_BeginTime.wYear,sTimes.s_BeginTime.wMonth,sTimes.s_BeginTime.wDay,
+	                         sTimes.s_BeginTime.wHour,sTimes.s_BeginTime.wMinute,sTimes.s_BeginTime.wSecond,
+	                         sTimes.s_BeginTime.wDayOfWeek,
+	                         sTimes.s_EndTime.wYear,sTimes.s_EndTime.wMonth,sTimes.s_EndTime.wDay,
+	                         sTimes.s_EndTime.wHour,sTimes.s_EndTime.wMinute,sTimes.s_EndTime.wSecond,
+	                         sTimes.s_EndTime.wDayOfWeek
+	     );
+
+	     ::system("pause");
+	     return 0;
+	 }
+	 * @endcode
+	 */
+	static void LastDays(G_TIMES &sTimes,int nCount)
+	{
+		if (nCount <= 1)
+		{
+			LastDay(sTimes);
+			return;
+		}
+
+		time_t time_now;
+		time(&time_now);
+
+		time_t time_beginday = time_now - 24 * 60 * 60 * nCount;
+		tm tm_BeginDay;
+		localtime_s(&tm_BeginDay, &time_beginday);
+
+		time_t time_endday = time_now - 24 * 60 * 60;
+		tm tm_EndDay;
+		localtime_s(&tm_EndDay, &time_endday);
+
+		sTimes.s_BeginTime.wYear = tm_BeginDay.tm_year + 1900;
+		sTimes.s_BeginTime.wMonth = tm_BeginDay.tm_mon + 1;
+		sTimes.s_BeginTime.wDay = tm_BeginDay.tm_mday;
+		sTimes.s_BeginTime.wHour = 0;
+		sTimes.s_BeginTime.wMinute = 0;
+		sTimes.s_BeginTime.wSecond = 0;
+		sTimes.s_BeginTime.wDayOfWeek = tm_BeginDay.tm_wday;
+		sTimes.s_BeginTime.wMilliseconds = 0;
+
+		sTimes.s_EndTime.wYear = tm_EndDay.tm_year + 1900;
+		sTimes.s_EndTime.wMonth = tm_EndDay.tm_mon + 1;
+		sTimes.s_EndTime.wDay = tm_EndDay.tm_mday;
+		sTimes.s_EndTime.wHour = 23;
+		sTimes.s_EndTime.wMinute = 59;
+		sTimes.s_EndTime.wSecond = 59;
+		sTimes.s_EndTime.wDayOfWeek = tm_EndDay.tm_wday;
 		sTimes.s_EndTime.wMilliseconds = 0;
 	}
 };

@@ -165,10 +165,23 @@ void testStringHelper()
 void testTimeHelper()
 {
 	TEST_BEGIN("testTimeHelper");
-	TEST_FUNC("CTimeHelper::Lastday()");
+
+	TEST_FUNC("CTimeHelper::ThisDay()");
 	G_TIMES sTimes;
-	CTimeHelper::Lastday(sTimes);
-	char str[128] = {0};
+	CTimeHelper::ThisDay(sTimes);
+	char str[128] = { 0 };
+	sprintf_s(str, 128, "begin:%04d-%02d-%02d %02d:%02d:%02d 星期:%d;end:%04d-%02d-%02d %02d:%02d:%02d 星期:%d",
+		sTimes.s_BeginTime.wYear, sTimes.s_BeginTime.wMonth, sTimes.s_BeginTime.wDay,
+		sTimes.s_BeginTime.wHour, sTimes.s_BeginTime.wMinute, sTimes.s_BeginTime.wSecond,
+		sTimes.s_BeginTime.wDayOfWeek,
+		sTimes.s_EndTime.wYear, sTimes.s_EndTime.wMonth, sTimes.s_EndTime.wDay,
+		sTimes.s_EndTime.wHour, sTimes.s_EndTime.wMinute, sTimes.s_EndTime.wSecond,
+		sTimes.s_EndTime.wDayOfWeek
+		);
+	TEST_RES(str);
+
+	TEST_FUNC("CTimeHelper::LastDay()");
+	CTimeHelper::LastDay(sTimes);
 	sprintf_s(str, 128, "begin:%04d-%02d-%02d %02d:%02d:%02d 星期:%d;end:%04d-%02d-%02d %02d:%02d:%02d 星期:%d",
 		                sTimes.s_BeginTime.wYear,sTimes.s_BeginTime.wMonth,sTimes.s_BeginTime.wDay,
 		                sTimes.s_BeginTime.wHour,sTimes.s_BeginTime.wMinute,sTimes.s_BeginTime.wSecond,
@@ -177,6 +190,18 @@ void testTimeHelper()
 		                sTimes.s_EndTime.wHour,sTimes.s_EndTime.wMinute,sTimes.s_EndTime.wSecond,
 		                sTimes.s_EndTime.wDayOfWeek
 	);
+	TEST_RES(str);
+
+	TEST_FUNC("CTimeHelper::LastDays(sTimes,3)");
+	CTimeHelper::LastDays(sTimes,3);
+	sprintf_s(str, 128, "begin:%04d-%02d-%02d %02d:%02d:%02d 星期:%d;end:%04d-%02d-%02d %02d:%02d:%02d 星期:%d",
+		sTimes.s_BeginTime.wYear, sTimes.s_BeginTime.wMonth, sTimes.s_BeginTime.wDay,
+		sTimes.s_BeginTime.wHour, sTimes.s_BeginTime.wMinute, sTimes.s_BeginTime.wSecond,
+		sTimes.s_BeginTime.wDayOfWeek,
+		sTimes.s_EndTime.wYear, sTimes.s_EndTime.wMonth, sTimes.s_EndTime.wDay,
+		sTimes.s_EndTime.wHour, sTimes.s_EndTime.wMinute, sTimes.s_EndTime.wSecond,
+		sTimes.s_EndTime.wDayOfWeek
+		);
 	TEST_RES(str);
 
 	TEST_BEGIN("CTimeCounter");
