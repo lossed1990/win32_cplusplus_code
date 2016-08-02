@@ -242,6 +242,264 @@ public:
 
 		return os.str();
 	}
+
+	/**
+	 * @brief 去除字符串左边的特殊字符
+	 *
+	 * @param chStr[in] 原始字符串
+	 * @param ch[in]    特殊字符
+	 *
+	 * @code
+	 int main(int argc, char* argv[])
+	 {
+	     string str = "###a#bc###";
+	     CStringHelper::TrimLeft(str,'#');
+		 cout << str << endl;
+
+	     ::system("pause");
+	     return 0;
+	 }
+	 * @endcode
+	 */
+	static string& TrimLeft(string& str, char ch)
+	{
+		int pos = 0;
+		for (pos = 0; pos < (int)str.size(); pos++)
+		{
+			if (str.at(pos) != ch) break;
+		}
+
+		str = str.substr(pos);
+		return str;
+	}
+
+	/**
+	 * @brief 去除字符串右边的特殊字符
+	 *
+	 * @param chStr[in] 原始字符串
+	 * @param ch[in]    特殊字符
+	 *
+	 * @code
+	 int main(int argc, char* argv[])
+	 {
+	     string str = "###a#bc###";
+	     CStringHelper::TrimRight(str,'#');
+	     cout << str << endl;
+
+	     ::system("pause");
+	     return 0;
+	 }
+	 * @endcode
+	 */
+	static string& TrimRight(string& str, char ch)
+	{
+		vector<char> chs;
+		int pos = str.size() - 1;
+		for (pos; pos >= 0; pos--)
+		{
+			if (str.at(pos) != ch) break;
+		}
+
+		str.resize(pos + 1);
+		return str;
+	}
+
+	/**
+	 * @brief 去除字符串两侧的特殊字符
+	 *
+	 * @param chStr[in] 原始字符串
+	 * @param ch[in]    特殊字符
+	 *
+	 * @code
+	 int main(int argc, char* argv[])
+	 {
+	     string str = "###a#bc###";
+	     CStringHelper::Trim(str,'#');
+	     cout << str << endl;
+
+	     ::system("pause");
+	     return 0;
+	 }
+	 * @endcode
+	 */
+	static string& Trim(string& str, char ch)
+	{
+		return TrimLeft(TrimRight(str, ch), ch);
+	}
+
+	/**
+	 * @brief Utf转成Unicode
+	 *
+	 * @param utf8[in]        转换前字符串
+	 * @param unicode[out]    转换后字符串
+	 *
+	 * @return true-成功 false-失败
+	 */
+	static bool Utf2Unicode(string& utf8, wstring& unicode)
+	{
+		int wideSize = ::MultiByteToWideChar(CP_UTF8, 0, utf8.c_str(), -1, NULL, 0);
+		if (wideSize == ERROR_NO_UNICODE_TRANSLATION)
+		{
+			return false;
+		}
+
+		if (wideSize == 0)
+		{
+			return false;
+		}
+
+		vector<wchar_t> resultString(wideSize);
+		int convResult = ::MultiByteToWideChar(CP_UTF8, 0, utf8.c_str(), -1, &resultString[0], wideSize);
+		if (convResult != wideSize)
+		{
+			return false;
+		}
+
+		unicode = wstring(&resultString[0]);
+		return true;
+	}
+
+	/**
+	 * @brief Unicode转成Ascii
+	 *
+	 * @param unicode[in]        转换前字符串
+	 * @param ascii[out]         转换后字符串
+	 *
+	 * @return true-成功 false-失败
+	 */
+	static bool Unicode2Ascii(wstring& unicode, string& ascii)
+	{
+		int asciiSize = ::WideCharToMultiByte(CP_OEMCP, 0, unicode.c_str(), -1, NULL, 0, NULL, NULL);
+		if (asciiSize == ERROR_NO_UNICODE_TRANSLATION)
+		{
+			return false;
+		}
+			
+		if (asciiSize == 0)
+		{
+			return false;
+		}
+
+		vector<char> resultString(asciiSize);
+		int convResult = ::WideCharToMultiByte(CP_OEMCP, 0, unicode.c_str(), -1, &resultString[0], asciiSize, NULL, NULL);
+		if (convResult != asciiSize) 
+		{
+			return false;
+		}
+
+		ascii = string(&resultString[0]);
+		return true;
+	}
+
+	/**
+	 * @brief Utf转成Ascii
+	 *
+	 * @param utf[in]        转换前字符串
+	 * @param ascii[out]     转换后字符串
+	 *
+	 * @return true-成功 false-失败
+	 */
+	static bool Utf2Ascii(string &utf, string &ascii)
+	{
+		wstring wstr;
+		bool res = Utf2Unicode(utf, wstr);
+		if (!res)
+		{
+			return false;
+		}
+
+		res = Unicode2Ascii(wstr, ascii);
+		if (!res)
+		{
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * @brief Ascii转成Unicode
+	 *
+	 * @param ascii[in]        转换前字符串
+	 * @param unicode[out]     转换后字符串
+	 *
+	 * @return true-成功 false-失败
+	 */
+	static bool Ascii2Unicode(string& ascii, wstring& unicode)
+	{
+		int wideSize = MultiByteToWideChar(CP_ACP, 0, (char *)ascii.c_str(), -1, NULL, 0);
+		if (wideSize == ERROR_NO_UNICODE_TRANSLATION)
+		{
+			return false;
+		}
+			
+		if (wideSize == 0)
+		{
+			return false;
+		}		
+
+		vector<wchar_t> resultString(wideSize);
+		int conResult = MultiByteToWideChar(CP_ACP, 0, (char *)ascii.c_str(), -1, &resultString[0], wideSize);
+		if (conResult != wideSize)
+		{
+			return false;
+		}
+			
+		unicode = wstring(&resultString[0]);
+		return true;
+	}
+
+	/**
+	 * @brief Unicode转成Utf
+	 *
+	 * @param unicode[in]        转换前字符串
+	 * @param utf[out]           转换后字符串
+	 *
+	 * @return true-成功 false-失败
+	 */
+	static bool Unicode2Utf(wstring &unicode, string &utf)
+	{
+		int utfSize = WideCharToMultiByte(CP_UTF8, 0, unicode.c_str(), -1, NULL, 0, NULL, NULL);
+		if (utfSize == 0)
+		{
+			return false;
+		}
+			
+		vector<char> resultString(utfSize);
+		int conResult = WideCharToMultiByte(CP_UTF8, 0, unicode.c_str(), -1, &resultString[0], utfSize, NULL, NULL);
+		if (conResult == utfSize)
+		{
+			return false;
+		}
+			
+		utf = string(&resultString[0]);
+		return true;
+	}
+
+	/**
+	 * @brief Ascii转成Utf
+	 *
+	 * @param ascii[in]        转换前字符串
+	 * @param utf[out]         转换后字符串
+	 *
+	 * @return true-成功 false-失败
+	 */
+	static bool Ascii2Utf(string &ascii, string &utf)
+	{
+		wstring unicode;
+		bool res = Ascii2Unicode(ascii, unicode);
+		if (res == false)
+		{
+			return false;
+		}
+
+		res = Unicode2Utf(unicode, utf);
+		if (res == false)
+		{
+			return false;
+		}
+
+		return true;
+	}
 };
 
 #endif // G_STRINGHELPER_H_

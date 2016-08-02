@@ -159,6 +159,21 @@ void testStringHelper()
 	TEST_FUNC("Md5String(\"abc\")");
 	str = CStringHelper::Md5String("abc");
 	TEST_RES(str);	
+
+	TEST_FUNC("TrimLeft(\"###a#bc###,'#'\")");
+	str = "###a#bc###";
+	CStringHelper::TrimLeft(str, '#');
+	TEST_RES(str);
+
+	TEST_FUNC("TrimRight(\"###a#bc###,'#'\")");
+	str = "###a#bc###";
+	CStringHelper::TrimRight(str, '#');
+	TEST_RES(str);
+	
+	TEST_FUNC("Trim(\"###a#bc###,'#'\")");
+	str = "###a#bc###";
+	CStringHelper::Trim(str, '#');
+	TEST_RES(str);
 }
 
 void testTimeHelper()

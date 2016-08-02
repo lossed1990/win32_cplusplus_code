@@ -51,6 +51,15 @@ windows下常用c++代码整理，用以之后快速搭建项目
 - 判断字符串是否为长时间字符格式
 - 判断字符串是否为合法的IP地址
 - 使用MD5算法转换字符串
+- 去除字符串左边的特殊字符
+- 去除字符串右边的特殊字符
+- 去除字符串两侧的特殊字符
+- Utf转成Unicode
+- Unicode转成Ascii
+- Utf转成Ascii
+- Ascii转成Unicode
+- Unicode转成Utf
+- Ascii转成Utf
 
 **。TimeHelper.h【时间常见操作函数】**
 
