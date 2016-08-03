@@ -21,10 +21,6 @@ using namespace std;
 class CStringHelper
 {
 public:
-	CStringHelper(){}
-	~CStringHelper(){}
-
-public:
 	/**
 	 * @brief 根据单个分隔符，分离字符串
      * 

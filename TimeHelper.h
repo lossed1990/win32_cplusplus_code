@@ -62,10 +62,6 @@ typedef struct {
 class CTimeHelper
 {
 public:
-	CTimeHelper(){}
-	~CTimeHelper(){}
-
-public:
 	/**
 	 * @brief 获取当日时间区间
 	 *

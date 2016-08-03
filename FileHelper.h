@@ -20,10 +20,6 @@
 class CFileHelper
 {
 public:
-	CFileHelper(){}
-	~CFileHelper(){}
-
-public:
 	/**
 	 * @brief 获取文件版本描述，输出示例：v1.0.0.1
 	 *

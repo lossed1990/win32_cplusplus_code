@@ -19,10 +19,6 @@ using namespace std;
 class CSystemHelper
 {
 public:
-	CSystemHelper(){}
-	~CSystemHelper(){}
-
-public:
 	/**
 	 * @brief 检查当前程序互斥量
 	 *
