@@ -13,6 +13,7 @@
 #include "../../LogHelper.h"
 #include "../../DumpHelper.h"
 #include "../../TTSHelper.h"
+#include "../../MonitorHelper.h"
 
 #define TEST_BEGIN(str) SetColor(10,0);(cout<<"====begin "<<(str)<<endl)
 #define TEST_FUNC(str) SetColor(15,0);(cout<<"@function>> "<<(str)<<endl)
@@ -27,6 +28,7 @@ void testTimeHelper();
 void testLogHelper();
 void testDumpHelper();
 void testTTSHelper();
+void testMonitorHelper();
 
 void SetColor(unsigned short forecolor = 4, unsigned short backgroudcolor = 0)
 {
@@ -45,6 +47,7 @@ int main(int argc, char* argv[])
 	testTimeHelper();
 	testLogHelper();
 	testDumpHelper();
+	testMonitorHelper();
 	
 	cout << "请输入restart，测试重新开启一个程序" <<endl;
 	char cParam[32] = { 0 };
@@ -360,4 +363,24 @@ void testTTSHelper()
 	TEST_FUNC("TTSHelper::Instance()->Speak(\"hello world\")");
 	TTSHelper::Instance()->Speak("hello world");
 	TEST_RES("程序结束时，请注意调用TTSHelper::FreeInstance()释放资源");
+}
+
+void testMonitorHelper()
+{
+	TEST_BEGIN("testMonitorHelper");
+	TEST_FUNC("MonitorHelper::Instance()->GetMonitorCount()");
+	
+	int count = MonitorHelper::Instance()->GetMonitorCount();
+	char chCount[64] = { 0 };
+	sprintf_s(chCount, 64, "显示器总数：%d; ", count);
+
+	string str = chCount;
+	count = 0;
+	for (auto item : MonitorHelper::Instance()->m_vecMonitorInfo){
+		sprintf_s(chCount, 64, "显示器%d=>left:%d,top:%d,right:%d,buttom:%d; ",
+			++count, item.rcMonitor.left, item.rcMonitor.top, item.rcMonitor.right, item.rcMonitor.bottom);
+		str += chCount;
+	}
+
+	TEST_RES(str);
 }
